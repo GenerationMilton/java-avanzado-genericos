@@ -2,6 +2,7 @@ package com.livemilton.java;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class JavaAvanzadoApplication {
@@ -42,6 +43,49 @@ public class JavaAvanzadoApplication {
 		System.out.println("****** MathUtil Class with generic method with restriction*******");
 		MathUtils.sum(2,2);
 
+		//List with wildcard ? in printList wildcard method
+		List<String> names = new ArrayList<>();
+		names.add("Gabriel");
+		names.add("Maria");
+
+		List<Integer> numbers = new ArrayList<>();
+		numbers.add(1);
+		numbers.add(2);
+
+		printList(numbers);
+		printList(names);
+
+		sumNumbers(numbers);
+
+		addNumbers(numbers);
+
+	}
+
+	//Wildcard ? , Can read all data with object type
+	public static void printList(List<?> list){
+		for(Object o:list){
+			System.out.println(o);
+		}
+	}
+
+	//Class with sumNumbers that extends - covariance - Permits extends number but forbidden add elements except null values
+	public static void sumNumbers(List<? extends Number> numbers){
+		double sum =0;
+		for(Number num: numbers){
+			sum += num.doubleValue();
+		}
+		System.out.println(sum);
+	}
+
+	//class with addNumbers that super class contravariance - accept list that number type, permit add,read object type
+	public static  void addNumbers(List<? super Integer> numbers){
+		numbers.add(3);
+		numbers.add(4);
+		numbers.add(5);
+
+		Object num = numbers.get(0);
+
+		System.out.println(num);
 	}
 
 }
