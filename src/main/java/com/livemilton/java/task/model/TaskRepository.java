@@ -1,13 +1,19 @@
 package com.livemilton.java.task.model;
 
 import com.livemilton.java.task.excepciones.TaskException;
+import com.livemilton.java.task.persistence.TaskPersistence;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepository {
 
-    List<Task> tasks = new ArrayList<>();
+    List<Task> tasks;
+
+    public TaskRepository() throws FileNotFoundException {
+        tasks = TaskPersistence.loadTasks();
+    }
 
     //guardar tarea
     public void save(Task task) throws TaskException {
@@ -15,6 +21,7 @@ public class TaskRepository {
             throw new TaskException("La tarea no puede ser nula");
         }
         tasks.add(task);
+        TaskPersistence.saveTasks(tasks);
     }
 
     //encontrar tarea por id
@@ -34,6 +41,7 @@ public class TaskRepository {
             throw new TaskException("La tarea no puede ser nula");
         }
         tasks.remove(task);
+        TaskPersistence.saveTasks(tasks);
     }
 
 
@@ -47,6 +55,7 @@ public class TaskRepository {
             throw new TaskException("La tarea no existe en la lista");
         }
         tasks.remove(task);
+        TaskPersistence.saveTasks(tasks);
     }
 
     //encontrar las tareas
@@ -78,6 +87,6 @@ public class TaskRepository {
             throw new TaskException("El indice no es valido");
         }
         tasks.set(index, updateTask);
-
+        TaskPersistence.saveTasks(tasks);
     }
 }

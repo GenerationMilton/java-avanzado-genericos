@@ -8,10 +8,12 @@ import com.livemilton.java.task.view.TaskView;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.FileNotFoundException;
+
 @SpringBootApplication
 public class JavaAvanzadoApplication {
 
-	public static void main(String[] args) throws TaskValidationException, TaskException {
+	public static void main(String[] args) throws TaskValidationException, TaskException, FileNotFoundException {
 		TaskRepository repository = new TaskRepository();
 		TaskController controller = new TaskController(repository);
 		TaskView view = new TaskView(controller);
