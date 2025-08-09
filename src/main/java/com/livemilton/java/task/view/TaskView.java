@@ -84,17 +84,47 @@ public class TaskView {
     }
 
     private Task getTaskInput(){
-        System.out.println("Ingresar ID");
-        String id = scanner.nextLine();
 
-        System.out.println("Ingrese el Título");
-        String title= scanner.nextLine();
+        String id;
+        do{
+            System.out.println("Ingresar ID");
+            id = scanner.nextLine();
+            if(id.isEmpty()){
+                System.out.println("El id no puede estar vacio");
+            }
+        }while(id.isEmpty());
 
-        System.out.println("Ingresar la descripcion");
-        String description = scanner.nextLine();
+        String title;
+        do{
+            System.out.println("Ingrese el TItulo");
+            title= scanner.nextLine();
+            if(title.isEmpty()){
+                System.out.println("El titulo no puede estar vacio");
+            }
+        }while (title.isEmpty());
 
-        System.out.println("Esta completada? true/false");
-        Boolean completed = Boolean.parseBoolean(scanner.nextLine());
+        String description;
+        do{
+            System.out.println("Ingrese la descripcion");
+            description= scanner.nextLine();
+            if(description.isEmpty()){
+                System.out.println("La descripcion no puede estar vacia");
+            }
+        }while (description.isEmpty());
+
+        Boolean completed = null;
+        while(completed==null){
+            System.out.println("Esta completada? true/false");
+            String input = scanner.nextLine().trim().toLowerCase();
+            if(input.equals("true")){
+                completed=true;
+            }else if(input.equals("false")){
+                completed=false;
+            }else {
+                System.out.println("El valor ingresado no es correcto, ingrese: 'true' o 'false' ");
+            }
+        }
+
 
         return new Task (id, title, description,completed);
     }
