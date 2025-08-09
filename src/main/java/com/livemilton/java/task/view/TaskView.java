@@ -3,6 +3,7 @@ package com.livemilton.java.task.view;
 import com.livemilton.java.task.controller.TaskController;
 import com.livemilton.java.task.excepciones.TaskException;
 import com.livemilton.java.task.excepciones.TaskValidationException;
+import com.livemilton.java.task.model.Task;
 
 import java.util.Scanner;
 
@@ -12,7 +13,7 @@ public class TaskView {
     private final Scanner scanner;
 
 
-    public TaskView(TaskController taskController, Scanner scanner) {
+    public TaskView(TaskController taskController) {
         this.taskController = taskController;
         this.scanner = new Scanner(System.in);
     }
@@ -34,22 +35,55 @@ public class TaskView {
                      break;
 
                 case "2":
+                    removeTaskView();
                     break;
 
                 case "3":
+                    updateTaskView();
                     break;
 
                 case "4":
+                    showTaskView();
                     break;
 
                 case "5":
-                    break;
+                    System.out.println("Saliendo del sistema");
+                    return;
+                default:
+                    System.out.println("Opcion invalida. Intente nuevamente");
 
             }
         }
     }
 
     public void addTaskView() throws TaskValidationException, TaskException {
+
+        Task task = getTaskInput();
+        taskController.addTask(task.getId(), task.getTitle(), task.getDescription(), task.getCompleted());
+        System.out.println("Tarea agregada correctamente");
+    }
+
+    public void removeTaskView() throws TaskValidationException, TaskException {
+        System.out.println("Ingrese el Id a eliminar");
+        String id= scanner.nextLine();
+        this.taskController.removeTask(id);
+        System.out.println("Tarea eliminada correctamente");
+    }
+
+    public void showTaskView() throws TaskValidationException, TaskException {
+        System.out.println("\nLa lista de Tareas");
+        this.taskController.showTask();
+    }
+
+
+    public void  updateTaskView() throws TaskValidationException, TaskException {
+
+        Task task = getTaskInput();
+        taskController.updateTask(task.getId(), task.getTitle(), task.getDescription(), task.getCompleted());
+        System.out.println("Tarea actualizada correctamente");
+    }
+
+    private Task getTaskInput(){
         System.out.println("Ingresar ID");
         String id = scanner.nextLine();
 
@@ -62,7 +96,6 @@ public class TaskView {
         System.out.println("Esta completada? true/false");
         Boolean completed = Boolean.parseBoolean(scanner.nextLine());
 
-        taskController.addTask(id,title,description,completed);
-        System.out.println("Tarea agregada correctamente");
+        return new Task (id, title, description,completed);
     }
 }
