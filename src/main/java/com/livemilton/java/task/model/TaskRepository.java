@@ -10,7 +10,7 @@ public class TaskRepository {
     List<Task> tasks = new ArrayList<>();
 
     //guardar tarea
-    public void save(Task task){
+    public void save(Task task) throws TaskException {
         if(task==null){
             throw new TaskException("La tarea no puede ser nula");
         }
@@ -28,7 +28,7 @@ public class TaskRepository {
     }
 
     ///eliminar tarea
-    public void remove(String id){
+    public void remove(String id) throws TaskException {
         Task task = findById(id);
         if(task==null){
             throw new TaskException("La tarea no puede ser nula");
@@ -38,7 +38,7 @@ public class TaskRepository {
 
 
     ///eliminar tarea
-    public void remove(Task task){
+    public void remove(Task task) throws TaskException {
 
         if(task==null){
             throw new TaskException("La tarea no puede ser nula");
@@ -50,7 +50,7 @@ public class TaskRepository {
     }
 
     //encontrar las tareas
-    public List<Task> findAll(){
+    public List<Task> findAll() throws TaskException {
         if(tasks.isEmpty()){
             throw new TaskException("La lista esta vacia");
         }
@@ -68,7 +68,7 @@ public class TaskRepository {
     }
 
     //Actualizar
-    public void updateTask(Task updateTask){
+    public void updateTask(Task updateTask) throws TaskException {
         if(updateTask==null){
             throw new TaskException("La tarea no puede ser nula");
         }
