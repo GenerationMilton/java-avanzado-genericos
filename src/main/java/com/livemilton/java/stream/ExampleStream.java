@@ -30,5 +30,47 @@ public class ExampleStream {
                 .filter(name -> name.length() >3)
                 .map(name -> name.toUpperCase())
                 .forEach(namesEx -> System.out.println(namesEx));
+
+
+        //example 3
+        Stream<String> stream1 = Stream.of("Ana","Luis","Marta","Juan");
+        //stream1.forEach( stream1Ex -> System.out.println(stream1Ex));  //Operacion Terminal
+
+        List<String> stringsExample = stream1.toList();
+        System.out.println(stringsExample);
+
+        //example 4
+        /*
+        * Intemediate operations
+        * Transform a Stream to another Stream
+        * lazy: don't execute since a terminal operation been invoked.
+         */
+        List<String> namesIntermediate = Arrays.asList("Gabriel", "Fernando", "Maria", "Marta");
+
+        Stream<String> filteredStream = names.stream()
+                .filter(name ->{
+                    System.out.println("Filtrando: " + name);
+                    return name.startsWith("M");
+                });
+        System.out.println("Nothing has been printed");
+
+        filteredStream.forEach( filterSr -> System.out.println(filterSr));
+
+        //example 5
+        /*
+        * Terminal Operations
+        * consume the Stream
+        * Return a concrete result (List, number, print, etc)
+        * An Stream only have been ONE terminal operation
+        * */
+        List<String> namesTerminal = Arrays.asList("Gabriel", "Fernando", "Maria", "Marta");
+
+        long count = namesTerminal.stream()
+                .filter(namesTer -> namesTer.startsWith("M")) //Intermediate Operation
+                .count(); // Terminal
+
+        System.out.println("Cantidad de nombres que empiezan con M: "+ count);
+
+
     }
 }
