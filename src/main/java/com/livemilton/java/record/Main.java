@@ -2,6 +2,7 @@ package com.livemilton.java.record;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -48,5 +49,40 @@ public class Main {
 
         System.out.println(byPriceRange);
         System.out.println(countByRange);
+
+        // 2. Reduccion matematica
+        Double total = products.stream()
+                .map(productDto -> productDto.price())
+                .reduce(0.0, (sum, price)-> sum + price);
+
+        System.out.println(total);
+
+        //
+        String productSummary = products.stream()
+                .map(p-> p.name() + "( $" + p.price() + " )")
+                .reduce("",(s1, s2) ->{
+                    if (s1.isEmpty()){
+                        return s2;
+                    }else {
+                        return  s1 + " | " + s2;
+                    }
+                });
+
+        System.out.println(productSummary);
+
+        //Conversion between collection
+        Set<Double> uniquePrices = products.stream()
+                .map(ProductDto::price)
+                .collect(Collectors.toSet());
+
+        System.out.println(uniquePrices);
+
+        Map<String, Double> productMap = products.stream()
+                .collect(Collectors.toMap(
+                        ProductDto::name,
+                        ProductDto::price
+                ));
+        System.out.println(productMap);
+
     }
 }
