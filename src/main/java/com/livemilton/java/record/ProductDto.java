@@ -10,6 +10,7 @@ public record ProductDto(String name, double price) {
     public ProductDto {
     }
 
+
     public ProductDto(String name) {
         this(name, 0);
     }
