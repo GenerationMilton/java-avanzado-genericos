@@ -32,5 +32,27 @@ public class Main {
         Product result = maybeTv.orElse(new Product("Generico", 0));
         System.out.println("Resultado: "+ result.name + "- $" + result.price);
 
+        //EXAMPLE 4
+        String maybeName = "Milton";
+
+        Optional.ofNullable(maybeName)
+                .ifPresentOrElse(
+                        name -> System.out.println("Nombre encontrado: " + name.toUpperCase()),
+                        ()-> System.out.println("No se encontro nungun nombre")
+                );
+
+
+        //EXAMPLE 5
+        List<Optional<String>> optionals = List.of(
+                Optional.of("Hola"),
+                Optional.empty(),
+                Optional.of("Chao")
+        );
+
+        optionals
+                .stream().filter(op -> op.isPresent())
+                .map(optionalGet -> optionalGet.get())
+                .forEach(System.out::println);
+
     }
 }
