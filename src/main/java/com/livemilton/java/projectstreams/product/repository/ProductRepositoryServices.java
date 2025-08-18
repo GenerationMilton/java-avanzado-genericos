@@ -1,6 +1,7 @@
 package com.livemilton.java.projectstreams.product.repository;
 
 import com.livemilton.java.projectstreams.product.exceptions.InvalidProductException;
+import com.livemilton.java.projectstreams.product.exceptions.ProductNotFoundException;
 import com.livemilton.java.projectstreams.product.interfaces.ProductRepository;
 import com.livemilton.java.projectstreams.product.model.Product;
 
@@ -38,12 +39,32 @@ public class ProductRepositoryServices implements ProductRepository {
     }
 
     @Override
-    public void update(Optional<Product> product) {
+    public void update(Optional<Product> product) throws ProductNotFoundException {
+        if(product.isPresent()){
+            Long idToUpdate= product.get().getId();
+            int index = findIndexById(idToUpdate);
+            if(index!=-1){
+                products.set(index, product.get());
+            }else {
+                throw new ProductNotFoundException("El producto que quiere actualizar no existe");
+            }
+        }else {
+            throw new ProductNotFoundException("El producto que quiere actualizar no existe");
+        }
 
     }
 
     @Override
     public boolean existByid(Long id) {
         return products.stream().anyMatch(product -> product.getId().equals(id));
+    }
+
+    private int findIndexById(Long id){
+        for(int i=0; i<products.size();i++){
+            if(products.get(i).getId().equals(id)){
+                return i;
+            }
+        }
+        return -1;
     }
 }
