@@ -1,6 +1,7 @@
 package com.livemilton.java.projectstreams.product.service;
 
 import com.livemilton.java.projectstreams.product.exceptions.InvalidProductException;
+import com.livemilton.java.projectstreams.product.exceptions.ProductNotFoundException;
 import com.livemilton.java.projectstreams.product.interfaces.ProductRepository;
 import com.livemilton.java.projectstreams.product.model.Product;
 
@@ -29,7 +30,42 @@ public class ProductService {
     }
 
     /*
-    *
+    * save product
     * */
+    public void saveProduct(Product product) throws InvalidProductException {
+        if(!productRepository.existByid(product.getId())){
+            productRepository.save(product);
+            System.out.println("Producto guardado...");
+        } else {
+            throw new InvalidProductException("El producto que dese agregar, ya existe!");
+        }
+    }
+
+    /*
+    * Delete product
+    * */
+    public void deleteProduct(Long id) throws ProductNotFoundException {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if(optionalProduct.isPresent()){
+            productRepository.delete(id);
+            System.out.println("El producto fue eliminado");
+        } else {
+            throw new ProductNotFoundException("El producto que desea eliminar no existe");
+        }
+    }
+
+    /*
+     * Update product
+     * */
+    public void updateProduct(Product product) throws ProductNotFoundException {
+        Optional<Product> optionalProduct = productRepository.findById(product.getId());
+        if(optionalProduct.isPresent()){
+            productRepository.update(optionalProduct);
+            System.out.println("El producto fue actualizado");
+        } else {
+            throw new ProductNotFoundException("El producto que desea actualizar no existe");
+        }
+    }
+
 
 }
