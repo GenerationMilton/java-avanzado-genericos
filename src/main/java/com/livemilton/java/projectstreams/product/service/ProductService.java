@@ -33,6 +33,7 @@ public class ProductService {
     * save product
     * */
     public void saveProduct(Product product) throws InvalidProductException {
+        ProductValidator.validate(product);
         if(!productRepository.existByid(product.getId())){
             productRepository.save(product);
             System.out.println("Producto guardado...");
@@ -57,7 +58,8 @@ public class ProductService {
     /*
      * Update product
      * */
-    public void updateProduct(Product product) throws ProductNotFoundException {
+    public void updateProduct(Product product) throws ProductNotFoundException, InvalidProductException {
+        ProductValidator.validate(product);
         Optional<Product> optionalProduct = productRepository.findById(product.getId());
         if(optionalProduct.isPresent()){
             productRepository.update(optionalProduct);
