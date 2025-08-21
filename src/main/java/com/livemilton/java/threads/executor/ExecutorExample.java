@@ -7,11 +7,43 @@ import java.util.concurrent.Executors;
 public class ExecutorExample {
 
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
-        executorService.execute( () -> System.out.println("Tarea A " + Thread.currentThread().getName()));
-        executorService.execute( () -> System.out.println("Tarea B " + Thread.currentThread().getName()));
-        executorService.execute( () -> System.out.println("Tarea C " + Thread.currentThread().getName()));
-        executorService.shutdown(); //method that awaits finish task and close the resource.
+
+        //Runnable task
+        Runnable task = ()-> {
+
+            System.out.println("Ejecutando la tarea " + Thread.currentThread().getName());
+            try{
+                Thread.sleep(1500);
+            } catch (InterruptedException e){
+                System.out.println(e.getMessage());
+            }
+            System.out.println("Tarea completada en hilo " + Thread.currentThread().getName());
+
+        };
+
+        System.out.println("Ejecutando newFixedThreadPool");
+        ExecutorService fixedPool = Executors.newFixedThreadPool(2);
+
+        for(int i=1; i<=5; i++ ){
+            fixedPool.execute(task);
+        }
+        fixedPool.shutdown();
+
+        System.out.println("Ejecutando newCachedThreadPool");
+        ExecutorService cachedPool = Executors.newCachedThreadPool();
+
+        for(int i=1; i<=5; i++ ){
+            cachedPool.execute(task);
+        }
+        cachedPool.shutdown();
+
+        System.out.println("Ejecutando newSingleThreadExecutor");
+        ExecutorService single = Executors.newSingleThreadExecutor();
+
+        for(int i=1; i<=5; i++ ){
+            single.execute(task);
+        }
+        single.shutdown();
     }
 
 }
