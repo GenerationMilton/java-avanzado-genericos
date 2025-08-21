@@ -2,6 +2,7 @@ package com.livemilton.java.threads.executor;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ShutdownComparison {
 
@@ -17,7 +18,11 @@ public class ShutdownComparison {
                     Thread.sleep(4000);
                 } catch (InterruptedException e) {
                     System.out.println("Tarea " +  taskId + " fue interrumpida");
-                    return;
+                    try{
+                        Thread.sleep(1000);
+                    }catch (InterruptedException error){}
+                        return;
+
                 }
                 System.out.println("Tarea finalizada");
             });
@@ -34,7 +39,11 @@ public class ShutdownComparison {
             executorService.shutdown();
         }
 
-
+        if(executorService.awaitTermination(2, TimeUnit.SECONDS)){
+            System.out.println("Tareas finalizadas correctamente");
+        }else{
+            System.out.println("Las tareas No Finalizaron correctamente");
+        }
 
 
 
