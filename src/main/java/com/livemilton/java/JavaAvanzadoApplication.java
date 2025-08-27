@@ -1,8 +1,11 @@
 package com.livemilton.java;
 
+import com.livemilton.java.project.concurrence.log.model.LogEntry;
+import com.livemilton.java.project.concurrence.log.service.LogService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
+import java.util.List;
 
 
 @SpringBootApplication
@@ -20,6 +23,11 @@ public class JavaAvanzadoApplication {
 			return;
 		}
 
+		LogService service = new LogService();
+
+		List<LogEntry> entries = service.readLogsFromFile(logFiles[0].getAbsolutePath());
+
+		entries.forEach(System.out::println);
 	}
 
 }

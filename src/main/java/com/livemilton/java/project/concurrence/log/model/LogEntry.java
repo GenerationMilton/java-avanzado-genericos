@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LogEntry {
+    //2025-05-12 09:01:35 | user_e | checkout | 200 | 850
     private LocalDateTime timestamp;
     private String user;
     private String action;
