@@ -1,11 +1,18 @@
 package com.livemilton.java;
 
 import com.livemilton.java.project.concurrence.log.model.LogEntry;
+import com.livemilton.java.project.concurrence.log.model.LogSummary;
+import com.livemilton.java.project.concurrence.log.service.LogProcessorTask;
 import com.livemilton.java.project.concurrence.log.service.LogService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 @SpringBootApplication
@@ -25,9 +32,27 @@ public class JavaAvanzadoApplication {
 
 		LogService service = new LogService();
 
-		List<LogEntry> entries = service.readLogsFromFile(logFiles[0].getAbsolutePath());
+		ExecutorService executorService = Executors.newFixedThreadPool(2);
+		List<Future<LogSummary>> futures = new ArrayList<>();
 
-		entries.forEach(System.out::println);
+		for(File logFile: logFiles){
+			List<LogEntry> entries = service.readLogsFromFile(logFile.getAbsolutePath());
+			LogProcessorTask task = new LogProcessorTask(entries);
+			futures.add(executorService.submit(task));
+		}
+
+		for(Future<LogSummary> future: futures){
+            try {
+                LogSummary summary = future.get();
+				System.out.println(summary);
+            } catch (InterruptedException | ExecutionException e) {
+				System.out.println(e.getMessage());
+            }
+        }
+
+		executorService.shutdown();
+
+
 	}
 
 }

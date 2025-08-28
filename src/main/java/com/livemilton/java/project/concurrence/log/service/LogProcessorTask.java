@@ -19,6 +19,9 @@ public class LogProcessorTask implements Callable<LogSummary> {
     @Override
     public LogSummary call() throws Exception {
 
+        System.out.println("Tarea: Procesando " + logEntries.size() + " " +
+                "entradas de log en hilo " + Thread.currentThread().getName());
+
         int totalEntries = logEntries.size();
 
         //statusCode >= 400
@@ -46,6 +49,8 @@ public class LogProcessorTask implements Callable<LogSummary> {
                         Collectors.counting()
                 ));
 
+        System.out.println("Finalizando: Proceso " + logEntries.size() + " " +
+                "entradas de log en hilo " + Thread.currentThread().getName());
 
 
         return new LogSummary(totalEntries, errorCount, uniqueUsers, averageResponseTime, errorCountsByCode);
